@@ -71,3 +71,18 @@ src/
     Hero.tsx          # 首屏
     Recap.tsx         # 复盘
 ```
+---
+
+## 相关项目
+
+### [four_crossings_cc](../four_crossings_cc) — 四渡赤水 · 全景沙盘
+
+同主题的姊妹项目 —— **四渡赤水战役可视化平台**,用更重的方案复刻同一段历史:
+
+- **技术栈不同**:Vue 3 (Composition API) + TypeScript + Vite 8,搭配 Pinia / Vue Router / SCSS / GSAP
+- **地图更真**:MapLibre GL JS 5 + OpenStreetMap 真实瓦片底图(免 token),Three.js + GeoTIFF 渲染 3D DEM 地形沙盘
+- **模式更全**:**叙事模式**(时间轴驱动的事件回顾)与**探索模式**(自由浏览兵力、会议、人物关系)双视图联动,可键盘控制播放与视角切换
+- **数据更严**:Zod 4 schema 校验、Vitest 4 单测(235+)、Playwright E2E、Lighthouse CI、Vercel 部署
+- **视觉更沉浸**:自托管霞鹜文楷 / 思源宋体,适合军史深度考据与长时间沉浸阅读
+
+> 本仓(`four_crossings_codex`)走的是**轻量 SVG + 路径动画**路线,适合快速演示、嵌入文章或对真实底图无强需求的场景;若需要真实地理坐标、3D 沙盘或严谨的数据校验,使用 `four_crossings_cc`。

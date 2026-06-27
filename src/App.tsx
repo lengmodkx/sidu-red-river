@@ -47,6 +47,26 @@ function App() {
             <span className="red">30,000</span> vs <span className="kmt">400,000+</span>
           </span>
           <span>1935.01 – 1935.05</span>
+          <a
+            className="extlink"
+            href="https://situation.lengmodkx.club/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="进入四渡赤水·态势沙盘（新窗口打开）"
+            title="进入四渡赤水·态势沙盘"
+          >
+            <span>态势沙盘</span>
+            <svg width="11" height="11" viewBox="0 0 12 12" aria-hidden focusable="false">
+              <path
+                d="M3.5 2.5h6v6M9.5 2.5l-6 6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
         </div>
       </header>
 
