@@ -46,7 +46,7 @@ function App() {
           <span>
             <span className="red">30,000</span> vs <span className="kmt">400,000+</span>
           </span>
-          <span>1935.01 – 1935.03</span>
+          <span>1935.01 – 1935.05</span>
         </div>
       </header>
 

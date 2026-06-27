@@ -39,8 +39,14 @@ export const forces: Force[] = [
   { id: "k-wangjialie", name: "黔军·王家烈", side: "kmt", faction: "guizhou", commander: "王家烈", strength: 8000, color: "var(--kmt-guizhou)" },
   { id: "k-hezhizhong", name: "黔军·何知重", side: "kmt", faction: "guizhou", commander: "何知重", strength: 6000, color: "var(--kmt-guizhou)" },
   { id: "k-baihuizhang", name: "黔军·柏辉章", side: "kmt", faction: "guizhou", commander: "柏辉章", strength: 5000, color: "var(--kmt-guizhou)" },
-];
 
+﻿
+  // 后期川军(大渡河、泸定桥方向)
+  { id: "k-yangsen", name: "川军·杨森", side: "kmt", faction: "sichuan", commander: "杨森", strength: 20000, color: "var(--kmt-sichuan)" },
+  { id: "k-liuwenhui", name: "川军·刘文辉", side: "kmt", faction: "sichuan", commander: "刘文辉", strength: 12000, color: "var(--kmt-sichuan)" },
+  { id: "k-xueyue-main", name: "中央军·薛岳追兵", side: "kmt", faction: "central", commander: "薛岳", strength: 60000, color: "var(--kmt-central)" },
+
+];
 export const forceById = Object.fromEntries(forces.map((f) => [f.id, f]));
 
 export function forcesBySide(side: "red" | "kmt") {

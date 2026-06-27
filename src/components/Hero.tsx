@@ -6,7 +6,7 @@
          四渡<span className="accent">赤水</span>
        </h1>
        <p className="lead">
-         1935 年 1 月到 3 月,中央红军在黔北川南的山地间三次渡过赤水河,毛泽东以一系列出人意料的机动,把三万红军从四十万敌军的包围中拖了出来。
+         1935 年 1 月到 5 月,中央红军在黔北川南的山地间三次渡过赤水河,毛泽东以一系列出人意料的机动,把三万红军从四十万敌军的包围中拖了出来。
          这是一次没有地图教程的战争,也是把"运动战"三个字写到极致的一战。本页把它所依赖的地形、双方态势、机动方向,逐段摆开。
        </p>
        <div className="figures">
@@ -24,7 +24,7 @@
          </div>
          <div className="fig">
            <div className="num">
-             3<span className="small"> 个月</span>
+             5<span className="small"> 个月</span>
           </div>
           <div className="lbl">战役跨度</div>
          </div>

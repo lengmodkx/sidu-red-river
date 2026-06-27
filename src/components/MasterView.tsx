@@ -3,13 +3,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MasterMap } from "./MasterMap";
 import { phases, dateNum } from "../data/phases";
 
-const MIN_DATE = "1935-01-19";
-const MAX_DATE = "1935-03-22";
+const MIN_DATE = "1935-01-07";
+const MAX_DATE = "1935-05-29";
 const MIN_N = dateNum(MIN_DATE);
 const MAX_N = dateNum(MAX_DATE);
 
 function formatDate(n: number): string {
-  const s = String(n);
+  const s = String(Math.floor(n));
   return `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`;
 }
 
@@ -32,21 +32,21 @@ function describeDay(n: number): { label: string; phase: string; phaseTag: strin
 }
 
 export function MasterView() {
-  const [date, setDate] = useState("1935-01-19");
+  const [date, setDate] = useState("1935-01-07");
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // 自动播放:从 MIN_DATE 推到 MAX_DATE
+  // 自动播放:从 MIN_DATE 推到 MAX_DATE。1x = 4 天/秒,慢得足以看清每个阶段
   useEffect(() => {
     if (!playing) return;
-    void date;
     const stepMs = 50;
-    const stepsPerTick = Math.max(1, Math.round((speed * 30) / stepMs)); // 每秒 ~30 帧推进
+    const daysPerSec = 4 * speed;
+    const daysPerTick = (daysPerSec * stepMs) / 1000; // 0.2 天/tick @ 1x
     const id = setInterval(() => {
       setDate((prev) => {
         const cur = dateStringToN(prev);
-        const nextN = cur + stepsPerTick * 2; // 一天 = 100 数字单位
+        const nextN = cur + daysPerTick;
         if (nextN >= MAX_N) {
           setPlaying(false);
           return MAX_DATE;
@@ -114,7 +114,7 @@ export function MasterView() {
         <div className="master-head">
           <div>
             <div className="eyebrow">CAMPAIGN SIMULATION · 全程态势推演</div>
-            <h2>把 73 天拖到眼前</h2>
+            <h2>把 142 天拖到眼前</h2>
             <p className="lead">
               拖动下面的时间轴,或点击播放。中央红军的位置、行军路线、发生过的战斗,都会按历史时刻同步演变。
             </p>
