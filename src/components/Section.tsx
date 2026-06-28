@@ -46,7 +46,10 @@
              <span>黔北 · 川南 · 滇东北</span>
              <span className="phase-tag">{phase.label}</span>
            </div>
-           <Map phase={phase} />
+          <div className="map-scroll">
+            <Map phase={phase} />
+            <div className="scroll-indicator" aria-hidden>← 左右滑动查看全图 →</div>
+          </div>
            <div className="legend">
              <div className="lg"><span className="sw red" /> 中央红军</div>
              <div className="lg"><span className="sw central" /> 中央军(薛岳)</div>

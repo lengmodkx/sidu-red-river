@@ -78,7 +78,8 @@ export function MasterView() {
   );
 
   // 拖拽
-  const onTrackClick = (e: React.MouseEvent) => {
+  const onTrackPointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
     const rect = trackRef.current?.getBoundingClientRect();
     if (!rect) return;
     const x = e.clientX - rect.left;
@@ -87,10 +88,11 @@ export function MasterView() {
     setDate(formatDate(n));
   };
 
-  const onThumbMouseDown = (e: React.MouseEvent) => {
+  const onThumbMouseDown = (e: React.PointerEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const onMove = (ev: MouseEvent) => {
+    (e.currentTarget as Element).setPointerCapture(e.pointerId);
+    const onMove = (ev: PointerEvent) => {
       const rect = trackRef.current?.getBoundingClientRect();
       if (!rect) return;
       const x = ev.clientX - rect.left;
@@ -98,12 +100,17 @@ export function MasterView() {
       const n = Math.round(MIN_N + pp * (MAX_N - MIN_N));
       setDate(formatDate(n));
     };
-    const onUp = () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
+    const onUp = (ev: PointerEvent) => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+      try {
+        (e.currentTarget as Element).releasePointerCapture(ev.pointerId);
+      } catch {}
     };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
   };
 
   const info = describeDay(dateStringToN(date));
@@ -127,7 +134,10 @@ export function MasterView() {
         </div>
 
         <div className="master-stage">
-          <MasterMap date={date} />
+          <div className="map-scroll">
+            <MasterMap date={date} />
+            <div className="scroll-indicator" aria-hidden>← 左右滑动查看全图 →</div>
+          </div>
         </div>
 
         <div className="master-controls">
@@ -156,7 +166,7 @@ export function MasterView() {
             <button type="button" className={speed === 1 ? "active" : ""} onClick={() => setSpeed(1)}>1×</button>
             <button type="button" className={speed === 2 ? "active" : ""} onClick={() => setSpeed(2)}>2×</button>
           </div>
-          <div className="scrubber" ref={trackRef} onClick={onTrackClick}>
+          <div className="scrubber" ref={trackRef} onPointerDown={onTrackPointerDown}>
             <div className="scrubber-track" />
             {phaseMarks.map((m) => (
               <div
@@ -173,7 +183,7 @@ export function MasterView() {
             <div
               className="scrubber-thumb"
               style={{ left: `${pct}%` }}
-              onMouseDown={onThumbMouseDown}
+              onPointerDown={onThumbMouseDown}
               role="slider"
               aria-valuemin={MIN_N}
               aria-valuemax={MAX_N}

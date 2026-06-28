@@ -27,6 +27,8 @@ dist-ssr
 # Local screenshots and dev artifacts
 snap-*.png
 snap*.png
+_diag/
+_diag*/
 *.tmp
 dev-*.log
 dev.log

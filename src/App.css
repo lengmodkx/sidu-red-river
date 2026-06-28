@@ -18,10 +18,10 @@
   -webkit-backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--rule);
 }
-.topbar .brand { display: flex; align-items: baseline; gap: 14px; font-family: var(--serif); }
-.topbar .brand .name { font-size: 17px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); }
-.topbar .brand .sub { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); letter-spacing: 0.08em; }
-.topbar .stat { display: flex; gap: 18px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); }
+.topbar .brand { display: flex; align-items: baseline; gap: 14px; font-family: var(--serif); min-width: 0; }
+.topbar .brand .name { font-size: 17px; font-weight: 600; letter-spacing: 0.04em; color: var(--ink); white-space: nowrap; }
+.topbar .brand .sub { font-size: 11px; color: var(--ink-faint); font-family: var(--mono); letter-spacing: 0.08em; white-space: nowrap; }
+.topbar .stat { display: flex; gap: 18px; font-family: var(--mono); font-size: 11px; color: var(--ink-soft); align-items: center; }
 .topbar .stat .red { color: var(--red-army); font-weight: 500; }
 .topbar .stat .kmt { color: var(--kmt-central); font-weight: 500; }
 .topbar .stat .extlink {
@@ -40,26 +40,15 @@
   border: 1px solid rgba(177, 58, 42, 0.28);
   border-radius: 2px;
   transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  min-height: 28px;
 }
-.topbar .stat .extlink:hover {
-  background: rgba(177, 58, 42, 0.12);
-  border-color: var(--red-army);
-  color: var(--red-army);
-  transform: translateY(-1px);
-}
-.topbar .stat .extlink:active { transform: translateY(0); }
 .topbar .stat .extlink svg {
   display: block;
   transition: transform 0.18s ease;
 }
-.topbar .stat .extlink:hover svg { transform: translate(1px, -1px); }
 .topbar .stat .extlink:focus-visible {
   outline: 2px solid var(--red-army);
   outline-offset: 2px;
-}
-@media (max-width: 720px) {
-  .topbar .stat .extlink span { display: none; }
-  .topbar .stat .extlink { padding: 5px 7px; }
 }
 
 /* ===== 时间轴 ===== */
@@ -70,11 +59,12 @@
   display: flex;
   background: var(--paper-dark);
   border-bottom: 1px solid var(--rule);
+  overflow: hidden; /* 桌面端兜底,小屏再用 768 档开启横向滚动 */
 }
 .timeline .line {
   position: absolute;
-  left: 5%;
-  right: 5%;
+  left: 0;
+  right: 0;
   top: 22px;
   height: 1px;
   background: var(--rule);
@@ -83,7 +73,7 @@
 }
 .timeline .line-fill {
   position: absolute;
-  left: 5%;
+  left: 0;
   top: 21.25px;
   height: 1.5px;
   background: linear-gradient(to right, var(--red-army), var(--red-army-soft));
@@ -105,6 +95,7 @@
   cursor: pointer;
   color: var(--ink-soft);
   transition: color 0.2s;
+  min-height: 56px;
 }
 .timeline .step .dot {
   position: relative;
@@ -123,15 +114,21 @@
   font-weight: 500;
   letter-spacing: 0.04em;
   margin-bottom: 2px;
+  text-align: center;
+  line-height: 1.2;
+  /* 允许长 label(如"南渡乌江·强渡大渡河·飞夺泸定桥")换行,而非被 nowrap 撑爆 step */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  display: block;
+  width: 100%;
 }
 .timeline .step .date {
   font-family: var(--mono);
   font-size: 10px;
   color: var(--ink-faint);
   letter-spacing: 0.04em;
+  white-space: nowrap;
 }
-.timeline .step:hover { color: var(--ink); }
-.timeline .step:hover .dot { border-color: var(--red-army); }
 .timeline .step.active { color: var(--red-army); }
 .timeline .step.active .dot {
   background: var(--red-army);
@@ -174,7 +171,7 @@
 }
 .hero .figures {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 18px;
   max-width: 880px;
   padding: 22px 26px;
@@ -192,6 +189,7 @@
   align-items: baseline;
   gap: 6px;
   margin-bottom: 6px;
+  flex-wrap: wrap;
 }
 .hero .figures .fig .num .small {
   font-size: 13px;
@@ -343,7 +341,10 @@
   text-transform: uppercase;
 }
 .mapwrap .maphead .phase-tag { color: var(--red-army); font-weight: 500; }
-.mapwrap svg {
+.mapwrap .map-scroll {
+  position: relative;
+}
+.mapwrap .map-scroll svg {
   display: block;
   width: 100%;
   height: auto;
@@ -588,30 +589,6 @@
   letter-spacing: 0.05em;
 }
 
-/* ===== 响应式 ===== */
-@media (max-width: 920px) {
-  .topbar { padding: 10px 16px; }
-  .topbar .stat { display: none; }
-  .timeline { top: 42px; }
-  .timeline .step .label { font-size: 12px; }
-  .timeline .step .date { font-size: 9px; }
-  .hero { padding: 48px 20px 40px; }
-  .phase { padding: 48px 20px; }
-  .phase .grid, .phase.reverse .grid {
-    grid-template-columns: 1fr;
-    gap: 26px;
-  }
-  .phase.reverse .copy { order: 1; }
-  .phase.reverse .mapwrap { order: 2; }
-  .recap { padding: 56px 20px 80px; }
-  .master { padding: 48px 20px; }
-  .master-head { grid-template-columns: 1fr; gap: 18px; }
-  .master-readout { text-align: left; border-left: 0; border-top: 2px solid var(--red-army); padding-left: 0; padding-top: 12px; }
-  .master-controls { flex-wrap: wrap; gap: 12px; }
-  .scrubber { width: 100%; }
-  .scrubber-mark-label { font-size: 9px; }
-}
-
 /* ===== 全程态势(MasterView) ===== */
 .master {
   padding: 80px 32px 64px;
@@ -683,6 +660,10 @@
   border: 1px solid var(--rule);
   box-shadow: 0 12px 28px -16px rgba(80, 60, 30, 0.18);
 }
+.master-stage .map-scroll {
+  position: relative;
+  overflow: hidden;
+}
 .master-stage svg {
   display: block;
   width: 100%;
@@ -715,8 +696,8 @@
   cursor: pointer;
   transition: background 0.15s;
   flex-shrink: 0;
+  min-height: 36px;
 }
-.master-controls .play:hover { background: var(--red-army); }
 .master-controls .play.playing { background: var(--red-army); }
 .master-controls .speed {
   display: flex;
@@ -732,6 +713,7 @@
   border: 1px solid var(--rule);
   cursor: pointer;
   letter-spacing: 0.04em;
+  min-height: 32px;
 }
 .master-controls .speed button.active {
   background: var(--ink);
@@ -744,6 +726,8 @@
   height: 50px;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 .scrubber-track {
   position: absolute;
@@ -815,5 +799,173 @@
   z-index: 3;
   box-shadow: 0 2px 8px rgba(177, 58, 42, 0.3);
   transition: transform 0.05s;
+  touch-action: none;
 }
 .scrubber-thumb:active { cursor: grabbing; transform: translateX(-50%) scale(1.15); }
+
+/* 横向滑动提示:desktop 隐藏,768 以下显示 */
+.scroll-indicator {
+  display: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 6px 0 2px;
+  letter-spacing: 0.08em;
+  background: var(--paper-dark);
+}
+
+/* ===== 响应式 ===== */
+/* 平板及以下:正文与地图由横向两列切换为单列堆叠 */
+@media (max-width: 1024px) {
+  .phase .grid,
+  .phase.reverse .grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .phase.reverse .copy { order: 1; }
+  .phase.reverse .mapwrap { order: 2; }
+  .master-head { grid-template-columns: 1fr; gap: 18px; align-items: start; }
+  .master-readout {
+    text-align: left;
+    border-left: 0;
+    border-top: 2px solid var(--red-army);
+    padding-left: 0;
+    padding-top: 12px;
+    min-width: 0;
+  }
+}
+
+/* 中等屏(iPad 横屏 ~900px 以下):topbar 收紧,timeline label 字号下调一档 */
+@media (max-width: 900px) {
+  .topbar .brand .sub { display: none; } /* 副标题隐藏,留出空间 */
+  .topbar .stat > span:first-child { display: none; } /* 隐藏 "30,000 vs 400,000+",只保留日期 + 外链 */
+  .timeline .step .label { font-size: 13px; letter-spacing: 0.02em; line-height: 1.18; }
+  .timeline .step .date { font-size: 9.5px; }
+}
+
+/* 手机:精修触控与排版 */
+@media (max-width: 768px) {
+  .topbar { padding: 8px 14px; }
+  .topbar .stat { gap: 8px; }
+  .topbar .stat > span { display: none; } /* 隐藏数字与日期,只保留外链按钮 */
+  .topbar .stat .extlink { padding: 6px 9px; min-height: 34px; }
+  .topbar .stat .extlink span { display: none; } /* <768px 只显图标 + 提示 */
+  .topbar { overflow: hidden; } /* 兜底防溢出 */
+  .topbar .brand, .topbar .stat, .topbar .stat .extlink { min-width: 0; }
+  .topbar .brand .sub { display: none; } /* 副标题隐藏,留出空间 */
+  .topbar .brand .name { white-space: nowrap; } /* 防止"四渡赤水"换行 */
+
+  /* timeline 在小屏横向可滚,每个 step 最小 76px 保证第 7 段 label 能展开 */
+  .timeline {
+    top: 38px;
+    padding: 0 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .timeline::-webkit-scrollbar { display: none; }
+  .timeline .step { flex: 0 0 auto; min-width: 76px; padding: 8px 4px 10px; min-height: 56px; }
+  .timeline .step .label { font-size: 11px; letter-spacing: 0; line-height: 1.18; }
+  .timeline .step .date { display: none; } /* 7 段挤不下日期,在 <480 才回退显示 */
+  .timeline .step .dot { width: 9px; height: 9px; margin-bottom: 4px; }
+  .timeline .line,
+  .timeline .line-fill { left: 0; right: 0; }
+
+  .hero { padding: 40px 18px 36px; }
+  .hero .eyebrow { font-size: 10px; letter-spacing: 0.22em; margin-bottom: 14px; }
+  .hero .lead { font-size: 16px; line-height: 1.7; margin-bottom: 26px; }
+  .hero .scroll-hint { display: none; }
+  .hero .figures { padding: 16px 16px; gap: 14px; }
+  .hero .figures .fig .num { font-size: 24px; }
+  .hero .figures .fig .num .small { font-size: 12px; }
+
+  .phase { padding: 44px 16px; }
+  .phase .grid { gap: 22px; }
+  .phase .copy h2 { font-size: 28px; }
+  .phase .copy .narrative p { font-size: 15px; line-height: 1.8; }
+  .phase .copy .insight { padding: 14px 16px; font-size: 14.5px; }
+  .phase .copy .facts .fact { font-size: 11px; padding: 5px 10px; }
+
+  .recap { padding: 56px 18px 80px; }
+  .recap h2 { font-size: 30px; margin-bottom: 22px; }
+  .recap .grid3 { gap: 14px; margin-top: 24px; }
+  .recap .card { padding: 18px; }
+  .recap .closer { font-size: 15.5px; line-height: 1.75; margin-top: 44px; }
+
+  .master { padding: 44px 16px 48px; }
+  .master-head h2 { font-size: 28px; }
+  .master-head .lead { font-size: 14px; }
+  .master-readout .readout-date { font-size: 24px; letter-spacing: 0.02em; }
+
+  /* 地图在窄屏上保持 720 宽,容器横向滚动,避免 SVG 文字过小 */
+  .master-stage,
+  .mapwrap .map-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .master-stage > .map-scroll,
+  .master-stage .map-scroll,
+  .mapwrap .map-scroll { display: block; }
+  .master-stage svg,
+  .mapwrap .map-scroll svg {
+    min-width: 720px;
+    width: 720px;
+    max-width: 720px;
+  }
+
+  /* 横向滑动提示条:desktop 隐藏 */
+  .scroll-indicator { display: block; }
+
+  .master-controls { flex-direction: column; align-items: stretch; gap: 12px; padding: 12px; }
+  .master-controls .play { justify-content: center; min-height: 44px; padding: 10px 14px; }
+  .master-controls .speed { justify-content: space-between; }
+  .master-controls .speed button { flex: 1; min-height: 40px; padding: 8px 0; }
+  .scrubber { width: 100%; height: 56px; }
+  .scrubber-track { top: 28px; }
+  .scrubber-fill { top: 28px; }
+  .scrubber-mark-dot { top: 23px; width: 11px; height: 11px; }
+  .scrubber-mark-label { display: none; } /* 6 个标签在小屏上必撞,直接隐藏 */
+  .scrubber-thumb { top: 20px; width: 22px; height: 22px; }
+}
+
+/* 超窄屏(<360px)再压一档,常出现在 320-360 的入门机 */
+@media (max-width: 380px) {
+  .topbar { padding: 7px 10px; }
+  .topbar .brand .name { font-size: 15px; }
+  .topbar .stat .extlink { padding: 5px 7px; min-height: 32px; }
+  .timeline { top: 36px; }
+  .timeline .step { padding: 6px 3px 8px; min-height: 50px; min-width: 64px; }
+  .timeline .step .label { font-size: 10.5px; }
+  .hero { padding: 32px 14px 26px; }
+  .hero h1 { margin-bottom: 16px; }
+  .hero .lead { font-size: 15px; margin-bottom: 22px; }
+  .hero .figures { padding: 14px 12px; gap: 10px; }
+  .hero .figures .fig .num { font-size: 21px; }
+  .hero .figures .fig .num .small { font-size: 11px; }
+  .hero .figures .fig .lbl { font-size: 10px; }
+  .phase { padding: 36px 14px; }
+  .phase .copy h2 { font-size: 24px; }
+  .master { padding: 36px 14px 40px; }
+  .master-readout .readout-date { font-size: 22px; }
+  .recap { padding: 44px 14px 60px; }
+  .recap h2 { font-size: 26px; }
+  .master-stage svg,
+  .mapwrap .map-scroll svg { min-width: 640px; width: 640px; max-width: 640px; }
+}
+
+/* 仅在支持悬停的设备上保留 hover 效果 */
+@media (hover: hover) and (pointer: fine) {
+  .topbar .stat .extlink:hover {
+    background: rgba(177, 58, 42, 0.12);
+    border-color: var(--red-army);
+    color: var(--red-army);
+    transform: translateY(-1px);
+  }
+  .topbar .stat .extlink:hover svg { transform: translate(1px, -1px); }
+  .timeline .step:hover { color: var(--ink); }
+  .timeline .step:hover .dot { border-color: var(--red-army); }
+  .master-controls .play:hover { background: var(--red-army); }
+}
